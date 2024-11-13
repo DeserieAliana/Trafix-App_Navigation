@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Metro Manila Traffic Routes</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <style>
+        #map { height: 600px; width: 100%; }
+    </style>
+</head>
+<body>
+
+<h2>Metro Manila Traffic Routes</h2>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+<script>
+    // Create map centered on Metro Manila
+    var map = L.map('map').setView([14.5995, 120.9842], 12);  // Coordinates of Metro Manila center
+
+    // Add OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // GeoJSON data for Metro Manila cities (with descriptions)
+    var metroManilaGeoJSON = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[120.982, 14.590], [120.990, 14.595], [120.998, 14.591], [120.992, 14.586]]]
+                },
+                "properties": {
+                    "name": "Manila",
+                    "description": "Manila is the capital of the Philippines. It's known for its waterfront promenade, colonial history, and vibrant culture."
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[121.050, 14.670], [121.060, 14.675], [121.065, 14.670], [121.055, 14.660]]]
+                },
+                "properties": {
+                    "name": "Quezon City",
+                    "description": "Quezon City is the largest city in Metro Manila, known for its government buildings and the University of the Philippines."
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[121.045, 14.548], [121.052, 14.552], [121.060, 14.550], [121.058, 14.545]]]
+                },
+                "properties": {
+                    "name": "Mandaluyong",
+                    "description": "Mandaluyong is known as the 'Tiger City of the Philippines' due to its booming economy and the presence of business districts."
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[120.980, 14.634], [120.985, 14.640], [120.995, 14.638], [120.990, 14.632]]]
+                },
+                "properties": {
+                    "name": "Pasig",
+                    "description": "Pasig is a city in Metro Manila known for its industrial, commercial, and residential areas, as well as its historical landmarks."
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[121.085, 14.586], [121.090, 14.590], [121.100, 14.589], [121.095, 14.585]]]
+                },
+                "properties": {
+                    "name": "Taguig",
+                    "description": "Taguig is known for the Bonifacio Global City (BGC), a commercial and lifestyle district, and its modern infrastructures."
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[120.985, 14.516], [120.990, 14.520], [121.000, 14.518], [120.995, 14.513]]]
+                },
+                "properties": {
+                    "name": "Parañaque",
+                    "description": "Parañaque is home to the popular Entertainment City, known for its casinos, hotels, and commercial centers."
+                }
+            }
+            // Add more cities here as needed
+        ]
+    };
+
+    // Add the GeoJSON layer to the map and attach popups with descriptions
+    L.geoJSON(metroManilaGeoJSON, {
+        onEachFeature: function (feature, layer) {
+            if (feature.properties && feature.properties.description) {
+                layer.bindPopup("<b>" + feature.properties.name + "</b><br>" + feature.properties.description);
+            }
+        }
+    }).addTo(map);
+
+    // Add Routing feature (basic example)
+    var control = L.Routing.control({
+        waypoints: [
+            L.latLng(14.5995, 120.9842),  // Sample start (Manila)
+            L.latLng(14.6749, 121.0551)   // Sample end (Quezon City)
+        ],
+        routeWhileDragging: true
+    }).addTo(map);
+
+</script>
+
+</body>
+</html>
